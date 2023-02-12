@@ -1,0 +1,2478 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+#Python
+
+
+# In[2]:
+
+
+#Sorting and Ranking
+
+
+# In[3]:
+
+
+import pandas as pd
+import numpy as np
+
+
+# In[4]:
+
+
+obj = pd.Series(range(4), index = ['d','a','b','c'])
+
+
+# In[5]:
+
+
+frame = pd.DataFrame(np.arange(8).reshape((2,4)), index = ['three','one'], columns = ['d','a','b','c'])
+
+
+# In[6]:
+
+
+# Sorting a data frame by indices
+frame.sort_index()
+
+
+# In[7]:
+
+
+frame.sort_index(axis=1)
+
+
+# In[8]:
+
+
+frame.sort_index(axis=1, ascending = False)
+
+
+# In[9]:
+
+
+obj = pd.Series([4,7,-3,2])
+
+
+# In[10]:
+
+
+obj.sort_values()
+
+
+# In[11]:
+
+
+obj = pd.Series([4,np.nan,7,np.nan,-3,2])
+
+
+# In[12]:
+
+
+obj.sort_index()
+
+
+# In[13]:
+
+
+obj.sort_values()
+
+
+# In[14]:
+
+
+frame = pd.DataFrame({'b':[4,7,-3,2], 'a':[0,1,0,1]})
+
+
+# In[15]:
+
+
+frame
+
+
+# In[16]:
+
+
+frame.sort_values(by='b')
+
+
+# In[17]:
+
+
+frame.sort_values(by=['a','b'])
+
+
+# In[18]:
+
+
+obj.rank()
+
+
+# In[19]:
+
+
+obj.rank(ascending=False, method='max')
+
+
+# In[20]:
+
+
+frame = pd.DataFrame({'b': [4.3, 7, -3, 2], 'a': [0, 1, 0, 1],
+'c': [-2, 5, 8, -2.5]})
+
+
+# In[21]:
+
+
+frame
+
+
+# In[22]:
+
+
+frame.rank(axis='columns')
+
+
+# In[23]:
+
+
+obj = pd.Series(range(5),index=['a','a','b','b','c'])
+
+
+# In[24]:
+
+
+obj
+
+
+# In[25]:
+
+
+obj.index.is_unique
+
+
+# In[26]:
+
+
+obj['a']
+
+
+# In[27]:
+
+
+obj['c']
+
+
+# In[28]:
+
+
+df = pd.DataFrame([[1.4, np.nan], [7.1, -4.5],
+[np.nan, np.nan], [0.75, -1.3]],
+index=['a', 'b', 'c', 'd'],
+columns=['one', 'two'])
+
+
+# In[29]:
+
+
+df
+
+
+# In[30]:
+
+
+df.sum()
+
+
+# In[31]:
+
+
+df.sum(axis='columns')
+
+
+# In[32]:
+
+
+df.mean(axis='columns',skipna=False)
+
+
+# In[33]:
+
+
+df.cumsum()
+
+
+# In[34]:
+
+
+df.describe()
+
+
+# In[35]:
+
+
+obj = pd.Series(['a','a','b','c']*4)
+
+
+# In[36]:
+
+
+obj
+
+
+# In[37]:
+
+
+obj.describe()
+
+
+# In[38]:
+
+
+get_ipython().system('pip install pandas_datareader')
+
+
+# In[39]:
+
+
+conda install -c anaconda pandas-datareader 
+
+
+# In[40]:
+
+
+conda install -c https://conda.anaconda.org/anaconda pandas-datareader
+
+
+# In[41]:
+
+
+pip install pandas_datareader
+
+
+# In[42]:
+
+
+import pandas_datareader.data as web
+
+
+# In[43]:
+
+
+pip install yfinance
+
+
+# In[44]:
+
+
+import yfinance as yf
+
+
+# In[45]:
+
+
+yf.pdr_override()
+
+
+# In[46]:
+
+
+from datetime import datetime
+
+
+# In[47]:
+
+
+data = web.get_data_yahoo('^GSPC', datetime(1970, 1, 1))
+
+
+# In[48]:
+
+
+all_data = {ticker: web.get_data_yahoo(ticker) for ticker in ['AAPL', 'IBM', 'MSFT', 'GOOG']}
+
+
+# In[49]:
+
+
+all_data
+
+
+# In[50]:
+
+
+price = pd.DataFrame({ticker: data['Adj Close'] for ticker, data in all_data.items()})
+
+
+# In[51]:
+
+
+volume = pd.DataFrame({ticker: data['Volume'] for ticker, data in all_data.items()})
+
+
+# In[52]:
+
+
+returns = price.pct_change()
+
+
+# In[53]:
+
+
+returns.tail()
+
+
+# In[54]:
+
+
+returns['MSFT'].corr(returns['IBM'])
+
+
+# In[55]:
+
+
+returns.corr()
+
+
+# In[56]:
+
+
+returns.cov()
+
+
+# In[57]:
+
+
+returns.corrwith(volume)
+
+
+# In[58]:
+
+
+#Unique Values, Value Counts and Membership
+
+
+# In[59]:
+
+
+obj = pd.Series(['c', 'a', 'd', 'a', 'a', 'b', 'b', 'c', 'c'])
+
+
+# In[60]:
+
+
+obj
+
+
+# In[61]:
+
+
+uniques= obj.unique()
+
+
+# In[62]:
+
+
+uniques
+
+
+# In[63]:
+
+
+obj.value_counts()
+
+
+# In[64]:
+
+
+mask = obj.isin(['b','c'])
+
+
+# In[65]:
+
+
+mask
+
+
+# In[66]:
+
+
+to_match = pd.Series(['c', 'a', 'b', 'b', 'c', 'a'])
+
+
+# In[67]:
+
+
+unique_vals = pd.Series(['c', 'b', 'a'])
+
+
+# In[68]:
+
+
+pd.Index(unique_vals).get_indexer(to_match)
+
+
+# In[69]:
+
+
+data = pd.DataFrame({'Qu1': [1, 3, 4, 3, 4],
+'Qu2': [2, 3, 1, 2, 3],
+'Qu3': [1, 5, 2, 4, 4]})
+
+
+# In[70]:
+
+
+data
+
+
+# In[71]:
+
+
+result = data.apply(pd.value_counts).fillna(0)
+
+
+# In[72]:
+
+
+result
+
+
+# In[73]:
+
+
+#Handling missing values
+
+
+# In[74]:
+
+
+string_data = pd.Series(['aardvark', 'artichoke', np.nan, 'avocado'])
+
+
+# In[75]:
+
+
+string_data.isnull()
+
+
+# In[76]:
+
+
+string_data[0] = None
+
+
+# In[77]:
+
+
+string_data.isnull()
+
+
+# In[78]:
+
+
+from numpy import nan as NA
+
+
+# In[79]:
+
+
+string_data.dropna()
+
+
+# In[80]:
+
+
+data = pd.DataFrame([[1., 6.5, 3.], [1., NA, NA],
+[NA, NA, NA], [NA, 6.5, 3.]])
+
+
+# In[81]:
+
+
+cleaned = data.dropna()
+
+
+# In[82]:
+
+
+cleaned
+
+
+# In[83]:
+
+
+data.dropna(how='all')
+
+
+# In[84]:
+
+
+data.dropna(axis=1,how='all')
+
+
+# In[85]:
+
+
+df = pd.DataFrame(np.random.randn(7,3))
+
+
+# In[86]:
+
+
+df.iloc[:4,1] = NA
+
+
+# In[87]:
+
+
+df.iloc[:2,2] = NA
+
+
+# In[88]:
+
+
+df
+
+
+# In[89]:
+
+
+df.dropna()
+
+
+# In[90]:
+
+
+df.dropna(thresh=1)
+
+
+# In[91]:
+
+
+df.fillna(0)
+
+
+# In[92]:
+
+
+df.fillna({1:0.5,2:0})
+
+
+# In[93]:
+
+
+_ = df.fillna(0,inplace=True)
+
+
+# In[94]:
+
+
+_
+
+
+# In[95]:
+
+
+df
+
+
+# In[96]:
+
+
+df.fillna(method='ffill')
+
+
+# In[97]:
+
+
+df.fillna(method='ffill',limit=2)
+
+
+# In[98]:
+
+
+data = pd.Series([1., NA, 3.5, NA, 7])
+
+
+# In[99]:
+
+
+data.fillna(data.mean())
+
+
+# In[100]:
+
+
+data = pd.DataFrame({'k1': ['one', 'two'] * 3 + ['two'],
+'k2': [1, 1, 2, 3, 3, 4, 4]})
+
+
+# In[101]:
+
+
+data
+
+
+# In[102]:
+
+
+data.duplicated()
+
+
+# In[103]:
+
+
+_ = data.drop_duplicates()
+
+
+# In[104]:
+
+
+data['v1'] = range(7)
+
+
+# In[105]:
+
+
+data
+
+
+# In[106]:
+
+
+data.drop_duplicates(['k1'])
+
+
+# In[107]:
+
+
+data.drop_duplicates(['k1','k2'],keep='first')
+
+
+# In[108]:
+
+
+#Transforming Data using a Function or Mapping
+
+
+# In[109]:
+
+
+data = pd.DataFrame({'food': ['bacon', 'pulled pork', 'bacon',
+'Pastrami', 'corned beef', 'Bacon',
+'pastrami', 'honey ham', 'nova lox'],
+'ounces': [4, 3, 12, 6, 7.5, 8, 3, 5, 6]})
+
+
+# In[110]:
+
+
+data
+
+
+# In[111]:
+
+
+meat_to_animal = {
+'bacon': 'pig',
+'pulled pork': 'pig',
+'pastrami': 'cow',
+'corned beef': 'cow',
+'honey ham': 'pig',
+'nova lox': 'salmon'
+}
+
+
+# In[112]:
+
+
+lowercased = data['food'].str.lower()
+
+
+# In[113]:
+
+
+lowercased
+
+
+# In[114]:
+
+
+data['animal'] = lowercased.map(meat_to_animal)
+
+
+# In[115]:
+
+
+data
+
+
+# In[116]:
+
+
+data1 = data['food'].map(lambda x:meat_to_animal[x.lower()])
+
+
+# In[117]:
+
+
+data1
+
+
+# In[118]:
+
+
+#Replacing Values
+
+
+# In[119]:
+
+
+data = pd.Series([1., -999., 2., -999., -1000., 3.])
+
+
+# In[120]:
+
+
+data
+
+
+# In[121]:
+
+
+data.replace([-999,-1000],[0,0])
+
+
+# In[122]:
+
+
+data = pd.DataFrame(np.arange(12).reshape((3, 4)),
+index=['Ohio', 'Colorado', 'New York'],
+columns=['one', 'two', 'three', 'four'])
+
+
+# In[123]:
+
+
+data
+
+
+# In[124]:
+
+
+transform = lambda x: x[:4].upper()
+
+
+# In[125]:
+
+
+transform
+
+
+# In[126]:
+
+
+data.index.map(transform)
+
+
+# In[127]:
+
+
+data.index= data.index.map(transform)
+
+
+# In[128]:
+
+
+data
+
+
+# In[129]:
+
+
+data.rename(index=str.title, columns = str.upper)
+
+
+# In[130]:
+
+
+data.rename(index={'OHIO': 'INDIANA'},
+columns={'three': 'peekaboo'})
+
+
+# In[131]:
+
+
+data.rename(index={'OHIO': 'INDIANA'}, inplace=True)
+
+
+# In[132]:
+
+
+data
+
+
+# In[133]:
+
+
+#Discretization and Binning
+
+
+# In[134]:
+
+
+ages = [20,22,25,27,21,23,37,31,61,45,41,32]
+
+
+# In[135]:
+
+
+bins = [18,25,35,60,100]
+
+
+# In[136]:
+
+
+cats = pd.cut(ages,bins)
+
+
+# In[137]:
+
+
+cats
+
+
+# In[138]:
+
+
+cats.codes
+
+
+# In[139]:
+
+
+cats.categories
+
+
+# In[140]:
+
+
+pd.value_counts(cats)
+
+
+# In[141]:
+
+
+cats = pd.cut(ages,[18,25,35,60,100], right = False)
+
+
+# In[142]:
+
+
+cats
+
+
+# In[143]:
+
+
+group_names = ['Youth','YoungAdult','MiddleAged','Senior']
+
+
+# In[144]:
+
+
+pd.cut(ages,bins,labels=group_names)
+
+
+# In[145]:
+
+
+data = np.random.randn(20)
+
+
+# In[146]:
+
+
+data
+
+
+# In[147]:
+
+
+pd.cut(data,4,precision=1)
+
+
+# In[148]:
+
+
+data = np.random.randn(1000)
+
+
+# In[149]:
+
+
+data
+
+
+# In[150]:
+
+
+pd.qcut(data,4,precision=2)
+
+
+# In[151]:
+
+
+#Detecting and Filtering Outliers
+
+
+# In[152]:
+
+
+data = pd.DataFrame(np.random.randn(1000,4))
+
+
+# In[153]:
+
+
+data
+
+
+# In[154]:
+
+
+data.describe()
+
+
+# In[155]:
+
+
+col = data[2]
+
+
+# In[156]:
+
+
+col
+
+
+# In[157]:
+
+
+col[np.abs(col)>3]
+
+
+# In[158]:
+
+
+data[(np.abs(data)>3).any(1)]
+
+
+# In[159]:
+
+
+data[np.abs(data)>3] = np.sign(data)*3
+
+
+# In[160]:
+
+
+data.describe()
+
+
+# In[161]:
+
+
+np.sign(data).head()
+
+
+# In[162]:
+
+
+#Permutation and Ramdom Sampling
+
+
+# In[163]:
+
+
+df = pd.DataFrame(np.arange(5*4).reshape(5,4))
+
+
+# In[164]:
+
+
+df
+
+
+# In[165]:
+
+
+sampler = np.random.permutation(5)
+
+
+# In[166]:
+
+
+sampler
+
+
+# In[167]:
+
+
+df
+
+
+# In[168]:
+
+
+df.take(sampler)
+
+
+# In[169]:
+
+
+df.sample(n=3)
+
+
+# In[170]:
+
+
+choices = pd.Series([5,7,-1,6,4])
+
+
+# In[171]:
+
+
+draws = choices.sample(n=10,replace=True)
+
+
+# In[172]:
+
+
+draws
+
+
+# In[173]:
+
+
+#Dummy Variables
+
+
+# In[174]:
+
+
+df = pd.DataFrame({'key':['b','b','a','c','a','b'],'data1':range(6)})
+
+
+# In[175]:
+
+
+pd.get_dummies(df['key'])
+
+
+# In[176]:
+
+
+dummies = pd.get_dummies(df['key'],prefix='key')
+
+
+# In[177]:
+
+
+dummies
+
+
+# In[ ]:
+
+
+
+
+
+# In[178]:
+
+
+df_with_dummy = df[['data1']].join(dummies)
+
+
+# In[179]:
+
+
+df_with_dummy
+
+
+# In[180]:
+
+
+mnames = ['movie_id','title','genres']
+
+
+# In[181]:
+
+
+unames = ['user_id', 'gender', 'age', 'occupation', 'zip']
+
+
+# In[182]:
+
+
+users = pd.read_table('users.dat', sep='::',
+header=None, names=unames)
+
+
+# In[183]:
+
+
+users
+
+
+# In[184]:
+
+
+rnames = ['user_id', 'movie_id', 'rating', 'timestamp']
+ratings = pd.read_table('ratings.dat', sep='::',
+header=None, names=rnames)
+
+
+# In[185]:
+
+
+ratings
+
+
+# In[186]:
+
+
+mnames = ['movie_id', 'title', 'genres']
+
+
+# In[187]:
+
+
+file = pd.read_table('movies.dat', sep='::',header=None, names=mnames)
+
+
+# In[188]:
+
+
+file
+
+
+# In[189]:
+
+
+all_genres=[]
+
+
+# In[190]:
+
+
+for x in file.genres:
+    all_genres.extend(x.split('|'))
+
+
+# In[191]:
+
+
+genres= pd.unique(all_genres)
+
+
+# In[192]:
+
+
+genres
+
+
+# In[193]:
+
+
+zero_matrix = np.zeros((len(file), len(genres)))
+
+
+# In[194]:
+
+
+dummies = pd.DataFrame(zero_matrix,columns=genres)
+
+
+# In[195]:
+
+
+dummies
+
+
+# In[196]:
+
+
+gen = file.genres[0]
+
+
+# In[197]:
+
+
+gen.split('|')
+
+
+# In[198]:
+
+
+dummies.columns.get_indexer(gen.split('|'))
+
+
+# In[199]:
+
+
+for i,gen in enumerate(file.genres):
+    indices = dummies.columns.get_indexer(gen.split('|'))
+    dummies.iloc[i,indices] = 1
+
+
+# In[200]:
+
+
+movies_windic = file.join(dummies.add_prefix('Genre_'))
+
+
+# In[201]:
+
+
+movies_windic.iloc[0]
+
+
+# In[202]:
+
+
+np.random.seed(12345)
+
+
+# In[203]:
+
+
+values = np.random.rand(10)
+
+
+# In[204]:
+
+
+values
+
+
+# In[205]:
+
+
+bins = [0,0.2,0.4,0.6,0.8,1]
+
+
+# In[206]:
+
+
+pd.get_dummies(pd.cut(values,bins))
+
+
+# In[207]:
+
+
+#String Manipulation
+
+
+# In[208]:
+
+
+val = 'a,b, guido'
+
+
+# In[209]:
+
+
+val.split(',')
+
+
+# In[210]:
+
+
+pieces = [x.strip() for x in val.split(',')]
+
+
+# In[211]:
+
+
+pieces
+
+
+# In[212]:
+
+
+first,second,third = pieces
+
+
+# In[213]:
+
+
+first + '::' + second + '::' + third
+
+
+# In[214]:
+
+
+'::'.join(pieces)
+
+
+# In[215]:
+
+
+'guido' in val
+
+
+# In[216]:
+
+
+val.index(',')
+
+
+# In[217]:
+
+
+val.find(':')
+
+
+# In[218]:
+
+
+val.count(',')
+
+
+# In[219]:
+
+
+val.count(',')
+
+
+# In[220]:
+
+
+val.replace(':','::')
+
+
+# In[221]:
+
+
+#Regular Expressions
+
+
+# In[222]:
+
+
+import re
+
+
+# In[223]:
+
+
+text = 'foo bar\t baz \tqux'
+
+
+# In[224]:
+
+
+re.split('\s+',text)
+
+
+# In[225]:
+
+
+regex = re.compile('\s+')
+
+
+# In[226]:
+
+
+regex.split(text)
+
+
+# In[227]:
+
+
+regex.findall(text)
+
+
+# In[228]:
+
+
+text = """Dave dave@google.com
+Steve steve@gmail.com
+Rob rob@gmail.com
+Ryan ryan@yahoo.com
+"""
+
+
+# In[229]:
+
+
+pattern = r'[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}'
+
+
+# In[230]:
+
+
+regex = re.compile(pattern,flags=re.IGNORECASE)
+
+
+# In[231]:
+
+
+regex
+
+
+# In[232]:
+
+
+regex.findall(text)
+
+
+# In[233]:
+
+
+m = regex.search(text)
+
+
+# In[234]:
+
+
+m
+
+
+# In[235]:
+
+
+text[m.start():m.end()]
+
+
+# In[236]:
+
+
+print(regex.match(text))
+
+
+# In[237]:
+
+
+print(regex.sub('REDACTED',text))
+
+
+# In[238]:
+
+
+pattern = r'([A-Z0-9._%+-]+)@([A-Z0-9.-]+)\.([A-Z]{2,4})'
+
+
+# In[239]:
+
+
+regex = re.compile(pattern, flags = re.IGNORECASE)
+
+
+# In[240]:
+
+
+regex
+
+
+# In[241]:
+
+
+m = regex.match('wesm@bright.net')
+
+
+# In[242]:
+
+
+m
+
+
+# In[243]:
+
+
+m.groups()
+
+
+# In[244]:
+
+
+regex.findall(text)
+
+
+# In[245]:
+
+
+print(regex.sub(r'Username: \1, Domain: \2, Suffix: \3', text))
+
+
+# In[246]:
+
+
+#Vectorized String Functions in Pandas
+
+
+# In[247]:
+
+
+data = {'Dave': 'dave@google.com', 'Steve': 'steve@gmail.com',
+'Rob': 'rob@gmail.com', 'Wes': np.nan}
+
+
+# In[248]:
+
+
+data = pd.Series(data)
+
+
+# In[249]:
+
+
+data
+
+
+# In[250]:
+
+
+data.isnull()
+
+
+# In[251]:
+
+
+data.str.contains('gmail')
+
+
+# In[252]:
+
+
+pattern
+
+
+# In[253]:
+
+
+data.str.findall(pattern, flags= re.IGNORECASE)
+
+
+# In[254]:
+
+
+matches = data.str.match(pattern,flags = re.IGNORECASE)
+
+
+# In[255]:
+
+
+matches
+
+
+# In[256]:
+
+
+matches.str[0]
+
+
+# In[257]:
+
+
+data.str[:5]
+
+
+# In[258]:
+
+
+#Hierarchical Indexing
+
+
+# In[259]:
+
+
+# With a hierarchically indexed object, so-called partial indexing is possible, enabling
+# you to concisely select subsets of the data:
+data = pd.Series(np.random.randn(9),
+...: index=[['a', 'a', 'a', 'b', 'b', 'c', 'c', 'd', 'd'],
+...: [1, 2, 3, 1, 3, 1, 2, 2, 3]])
+
+
+# In[260]:
+
+
+data
+
+
+# In[261]:
+
+
+data.index
+
+
+# In[262]:
+
+
+data['b']
+
+
+# In[263]:
+
+
+data['b':'c']
+
+
+# In[264]:
+
+
+data.loc[['b','d']]
+
+
+# In[265]:
+
+
+# Hierarchical indexing plays an important role in reshaping data and group-based
+# operations like forming a pivot table.
+data.unstack()
+
+
+# In[266]:
+
+
+data.unstack().stack()
+
+
+# In[267]:
+
+
+frame = pd.DataFrame(np.arange(12).reshape((4, 3)),
+index=[['a', 'a', 'b', 'b'], [1, 2, 1, 2]],
+columns=[['Ohio', 'Ohio', 'Colorado'],
+['Green', 'Red', 'Green']])
+
+
+# In[268]:
+
+
+frame
+
+
+# In[269]:
+
+
+frame.index.names = ['key1','key2']
+
+
+# In[270]:
+
+
+frame.columns.names = ['state','color']
+
+
+# In[271]:
+
+
+frame
+
+
+# In[272]:
+
+
+frame['Ohio']
+
+
+# In[273]:
+
+
+frame.swaplevel('key1','key2')
+
+
+# In[274]:
+
+
+frame.sort_index(level=1)
+
+
+# In[275]:
+
+
+frame.swaplevel(0,1).sort_index(level=0)
+
+
+# In[276]:
+
+
+frame.sum(level='key2')
+
+
+# In[277]:
+
+
+frame.sum(level='color',axis=1)
+
+
+# In[278]:
+
+
+frame = pd.DataFrame({'a': range(7), 'b': range(7, 0, -1),
+'c': ['one', 'one', 'one', 'two', 'two',
+'two', 'two'],
+'d': [0, 1, 2, 0, 1, 2, 3]})
+
+
+# In[279]:
+
+
+frame
+
+
+# In[280]:
+
+
+frame2= frame.set_index(['c','d'])
+
+
+# In[281]:
+
+
+frame2
+
+
+# In[282]:
+
+
+frame.set_index(['c','d'],drop=False)
+
+
+# In[283]:
+
+
+df1 = pd.DataFrame({'key': ['b', 'b', 'a', 'c', 'a', 'a', 'b'],
+'data1': range(7)})
+
+
+# In[284]:
+
+
+df1
+
+
+# In[285]:
+
+
+df2 = pd.DataFrame({'key': ['a', 'b', 'd'],
+'data2': range(3)})
+
+
+# In[287]:
+
+
+df2
+
+
+# In[288]:
+
+
+pd.merge(df1,df2)
+
+
+# In[289]:
+
+
+pd.merge(df1,df2,on='key')
+
+
+# In[290]:
+
+
+df3 = pd.DataFrame({'lkey': ['b', 'b', 'a', 'c', 'a', 'a', 'b'],
+'data1': range(7)})
+
+
+# In[291]:
+
+
+df4 = pd.DataFrame({'rkey': ['a', 'b', 'd'],
+'data2': range(3)})
+
+
+# In[292]:
+
+
+pd.merge(df3,df4,left_on='lkey',right_on='rkey')
+
+
+# In[293]:
+
+
+pd.merge(df1,df2,how='outer')
+
+
+# In[294]:
+
+
+df1 = pd.DataFrame({'key': ['b', 'b', 'a', 'c', 'a', 'b'],
+'data1': range(6)})
+
+
+# In[295]:
+
+
+df2 = pd.DataFrame({'key': ['a', 'b', 'a', 'b', 'd'],
+'data2': range(5)})
+
+
+# In[296]:
+
+
+pd.merge(df1,df2,on='key',how='left')
+
+
+# In[297]:
+
+
+pd.merge(df1,df2,on='key',how='inner')
+
+
+# In[298]:
+
+
+left = pd.DataFrame({'key1': ['foo', 'foo', 'bar'],
+'key2': ['one', 'two', 'one'],
+'lval': [1, 2, 3]})
+
+
+# In[299]:
+
+
+right = pd.DataFrame({'key1': ['foo', 'foo', 'bar', 'bar'],
+'key2': ['one', 'one', 'one', 'two'],
+'rval': [4, 5, 6, 7]})
+
+
+# In[300]:
+
+
+pd.merge(left, right, on=['key1', 'key2'], how='outer')
+
+
+# In[301]:
+
+
+pd.merge(left,right,on='key1')
+
+
+# In[302]:
+
+
+pd.merge(left, right, on=['key1', 'key2'], how='outer')
+
+
+# In[303]:
+
+
+pd.merge(left,right,on='key1',suffixes=('_left','_right'))
+
+
+# In[304]:
+
+
+left1 = pd.DataFrame({'key': ['a', 'b', 'a', 'a', 'b', 'c'],
+'value': range(6)})
+
+
+# In[305]:
+
+
+right1 = pd.DataFrame({'group_val': [3.5, 7]}, index=['a', 'b'])
+
+
+# In[306]:
+
+
+left1
+
+
+# In[307]:
+
+
+right1
+
+
+# In[308]:
+
+
+pd.merge(left1,right1,left_on='key',right_index=True,how='outer')
+
+
+# In[309]:
+
+
+lefth = pd.DataFrame({'key1': ['Ohio', 'Ohio', 'Ohio',
+'Nevada', 'Nevada'],
+'key2': [2000, 2001, 2002, 2001, 2002],
+'data': np.arange(5.)})
+
+
+# In[310]:
+
+
+lefth
+
+
+# In[311]:
+
+
+righth = pd.DataFrame(np.arange(12).reshape((6, 2)),
+index=[['Nevada', 'Nevada', 'Ohio', 'Ohio',
+'Ohio', 'Ohio'],
+[2001, 2000, 2000, 2000, 2001, 2002]],
+columns=['event1', 'event2'])
+
+
+# In[312]:
+
+
+righth
+
+
+# In[313]:
+
+
+pd.merge(lefth,righth,left_on=['key1','key2'],right_index=True)
+
+
+# In[314]:
+
+
+pd.merge(lefth, righth, left_on=['key1', 'key2'],
+right_index=True, how='outer')
+
+
+# In[315]:
+
+
+left2 = pd.DataFrame([[1., 2.], [3., 4.], [5., 6.]],
+index=['a', 'c', 'e'],
+columns=['Ohio', 'Nevada'])
+
+
+# In[316]:
+
+
+left2
+
+
+# In[317]:
+
+
+right2 = pd.DataFrame([[7., 8.], [9., 10.], [11., 12.], [13, 14]],
+index=['b', 'c', 'd', 'e'],
+columns=['Missouri', 'Alabama'])
+
+
+# In[318]:
+
+
+right2
+
+
+# In[319]:
+
+
+pd.merge(left2,right2,how='outer',left_index=True, right_index=True)
+
+
+# In[320]:
+
+
+left2.join(right2,how='outer')
+
+
+# In[321]:
+
+
+left1.join(right1,on='key')
+
+
+# In[322]:
+
+
+another = pd.DataFrame([[7., 8.], [9., 10.], [11., 12.], [16., 17.]],
+index=['a', 'c', 'e', 'f'],
+columns=['New York', 'Oregon'])
+
+
+# In[323]:
+
+
+another
+
+
+# In[324]:
+
+
+left2.join([right2, another])
+
+
+# In[325]:
+
+
+arr = np.arange(12).reshape((3, 4))
+
+
+# In[326]:
+
+
+arr
+
+
+# In[327]:
+
+
+np.concatenate([arr,arr],axis=1)
+
+
+# In[328]:
+
+
+s1 = pd.Series([0,1], index = ['a','b'])
+
+
+# In[329]:
+
+
+s2 = pd.Series([2,3,4], index = ['c','d','e'])
+
+
+# In[330]:
+
+
+s3 = pd.Series([5,6],index = ['f','g'])
+
+
+# In[331]:
+
+
+pd.concat([s1,s2,s3])
+
+
+# In[332]:
+
+
+pd.concat([s1,s2,s3], axis = 1)
+
+
+# In[333]:
+
+
+s4 = pd.concat([s1,s3])
+
+
+# In[334]:
+
+
+s4
+
+
+# In[335]:
+
+
+s4 = pd.concat([s1,s4], axis = 1)
+
+
+# In[336]:
+
+
+s4
+
+
+# In[337]:
+
+
+pd.concat([s1,s4],axis=1,join='inner')
+
+
+# In[338]:
+
+
+pd.concat([s1, s4], axis=1, join_axes=[['a', 'c', 'b', 'e']])
+
+
+# In[339]:
+
+
+result = pd.concat([s1, s1, s3], keys=['one', 'two', 'three'])
+
+
+# In[340]:
+
+
+result
+
+
+# In[341]:
+
+
+result.unstack()
+
+
+# In[342]:
+
+
+result.unstack().unstack().unstack()
+
+
+# In[343]:
+
+
+pd.concat([s1, s2, s3], axis=1, keys=['one', 'two', 'three'])
+
+
+# In[344]:
+
+
+df1 = pd.DataFrame(np.arange(6).reshape(3, 2), index=['a', 'b', 'c'],
+columns=['one', 'two'])
+
+
+# In[345]:
+
+
+df1
+
+
+# In[346]:
+
+
+df2 = pd.DataFrame(5 + np.arange(4).reshape(2, 2), index=['a', 'c'],
+columns=['three', 'four'])
+
+
+# In[347]:
+
+
+df2
+
+
+# In[348]:
+
+
+pd.concat([df1,df2],axis=1,keys=['level1','level2'])
+
+
+# In[349]:
+
+
+pd.concat({'level1':df1,'level2':df2}, axis=1)
+
+
+# In[350]:
+
+
+pd.concat([df1,df2],axis=1,keys=['level1','level2'],names=['upper','lower'])
+
+
+# In[351]:
+
+
+df1 = pd.DataFrame(np.random.randn(3, 4), columns=['a', 'b', 'c', 'd'])
+
+
+# In[352]:
+
+
+df1
+
+
+# In[353]:
+
+
+df2 = pd.DataFrame(np.random.randn(2, 3), columns=['b', 'd', 'a'])
+
+
+# In[354]:
+
+
+df2
+
+
+# In[355]:
+
+
+df3 = pd.concat([df1,df2],ignore_index = True)
+
+
+# In[356]:
+
+
+df3
+
+
+# In[357]:
+
+
+#Combining Data with Overlap
+
+
+# In[358]:
+
+
+a = pd.Series([np.nan, 2.5, np.nan, 3.5, 4.5, np.nan],
+index=['f', 'e', 'd', 'c', 'b', 'a'])
+
+
+# In[359]:
+
+
+b = pd.Series(np.arange(len(a), dtype=np.float64),
+index=['f', 'e', 'd', 'c', 'b', 'a'])
+
+
+# In[360]:
+
+
+a
+
+
+# In[361]:
+
+
+b
+
+
+# In[362]:
+
+
+np.where(pd.isnull(a),b,a)
+
+
+# In[363]:
+
+
+b[:-2].combine_first(a[2:])
+
+
+# In[364]:
+
+
+df1 = pd.DataFrame({'a': [1., np.nan, 5., np.nan],
+'b': [np.nan, 2., np.nan, 6.],
+'c': range(2, 18, 4)})
+
+
+# In[365]:
+
+
+df1
+
+
+# In[366]:
+
+
+df2 = pd.DataFrame({'a': [5., 4., np.nan, 3., 7.],
+'b': [np.nan, 3., 4., 6., 8.]})
+
+
+# In[367]:
+
+
+df2
+
+
+# In[368]:
+
+
+df1.combine_first(df2)
+
+
+# In[369]:
+
+
+#Reshaping and Pivoting
+
+
+# In[370]:
+
+
+data = pd.DataFrame(np.arange(6).reshape((2,3)), index = pd.Index(['Ohio','Colorado'], name = 'state'), columns = pd.Index(['one','two','three'], name='number'))
+
+
+# In[371]:
+
+
+data
+
+
+# In[372]:
+
+
+result = data.stack()
+
+
+# In[373]:
+
+
+result
+
+
+# In[374]:
+
+
+result.unstack()
+
+
+# In[375]:
+
+
+result.unstack(0)
+
+
+# In[376]:
+
+
+result.unstack('state')
+
+
+# In[377]:
+
+
+s1 = pd.Series([0, 1, 2, 3], index=['a', 'b', 'c', 'd'])
+
+
+# In[378]:
+
+
+s1
+
+
+# In[379]:
+
+
+s2 = pd.Series([4, 5, 6], index=['c', 'd', 'e'])
+
+
+# In[380]:
+
+
+s2
+
+
+# In[381]:
+
+
+data2 = pd.concat([s1, s2], keys=['one', 'two'])
+
+
+# In[382]:
+
+
+data2
+
+
+# In[383]:
+
+
+data2.unstack()
+
+
+# In[384]:
+
+
+data2.unstack().stack()
+
+
+# In[385]:
+
+
+data2.unstack().stack(dropna=False)
+
+
+# In[386]:
+
+
+df = pd.DataFrame({'left': result, 'right': result + 5},
+columns=pd.Index(['left', 'right'], name='side'))
+
+
+# In[387]:
+
+
+df
+
+
+# In[388]:
+
+
+df.unstack('state')
+
+
+# In[389]:
+
+
+df.unstack('state').stack('side')
+
+
+# In[390]:
+
+
+df = pd.DataFrame({'key': ['foo', 'bar', 'baz'],
+'A': [1, 2, 3],
+'B': [4, 5, 6],
+'C': [7, 8, 9]})
+
+
+# In[391]:
+
+
+df
+
+
+# In[392]:
+
+
+melted = pd.melt(df,['key'])
+
+
+# In[393]:
+
+
+melted
+
+
+# In[394]:
+
+
+reshaped = melted.pivot('variable','key','value')
+
+
+# In[ ]:
+
+
+
+
+
+# In[395]:
+
+
+reshaped
+
+
+# In[396]:
+
+
+reshaped.reset_index()
+
+
+# In[397]:
+
+
+pd.melt(df,id_vars=['key'], value_vars = ['A','B'])
+
+
+# In[398]:
+
+
+pd.melt(df,value_vars=['key','A','B'])
+
